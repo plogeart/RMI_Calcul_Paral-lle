@@ -1,25 +1,36 @@
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.List;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
-public class ServeurNoeuds extends UnicastRemoteObject implements ServiceNoeuds {
+public class ServeurNoeuds {
 
-    private List<ServiceCalcul> noeuds;
+    public static void main(String[] args) {
 
-    public ServeurNoeuds() throws RemoteException {
-        super();
-        this.noeuds = new ArrayList<ServiceCalcul>();
-    }
+        int port = 1099;
 
-    public synchronized void ajouterNoeud(ServiceCalcul noeud) throws RemoteException {
-        this.noeuds.add(noeud);
+        if (args.length > 0) {
+            port = Integer.parseInt(args[0]);
+        }
 
-        System.out.println("Nouveau nœud ajouté.");
-        System.out.println("Nombre de nœuds disponibles : " + this.noeuds.size());
-    }
+        try {
+            Registry registry;
 
-    public synchronized List<ServiceCalcul> getNoeudsDisponibles() throws RemoteException {
-        return new ArrayList<ServiceCalcul>(this.noeuds);
+            try {
+                registry = LocateRegistry.createRegistry(port);
+                System.out.println("Registry créé sur le port " + port);
+            } catch (Exception e) {
+                registry = LocateRegistry.getRegistry(port);
+                System.out.println("Registry déjà existant sur le port " + port);
+            }
+
+            ServiceNoeuds serviceNoeuds = new ServiceNoeudsImpl();
+
+            registry.rebind("noeuds", serviceNoeuds);
+
+            System.out.println("Serveur de nœuds prêt.");
+            System.out.println("Service enregistré sous le nom : noeuds");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

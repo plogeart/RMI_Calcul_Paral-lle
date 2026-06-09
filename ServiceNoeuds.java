@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface ServiceNoeuds extends Remote {
 
-    void ajouterNoeud(ServiceCalcul noeud) throws RemoteException;
+    void enregistrerNoeud(ServiceCalcul serviceCalcul) throws RemoteException;
 
-    List<ServiceCalcul> getNoeudsDisponibles() throws RemoteException;
+    List<ServiceCalcul> getNoeuds() throws RemoteException;
 }
