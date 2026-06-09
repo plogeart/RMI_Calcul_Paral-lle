@@ -5,9 +5,9 @@ import java.time.Instant;
 import raytracer.Image;
 import raytracer.Scene;
 
-public class NoeudCalculImpl extends UnicastRemoteObject implements ServiceNoeudCalcul {
+public class ServiceCalculImpl extends UnicastRemoteObject implements ServiceCalcul {
 
-    public NoeudCalculImpl() throws RemoteException {
+    public ServiceCalculImpl() throws RemoteException {
         super();
     }
 
